@@ -161,6 +161,11 @@ async function initMailer() {
 }
 
 // ---------- Email (formatted HTML) ----------
+const emailDisabled = String(process.env.DISABLE_EMAIL || "").toLowerCase() === "true";
+if (!emailDisabled) {
+  sendInternalEmail({ payload, flags, service, quote }).catch(err => console.error("Email error:", err));
+}
+
 async function sendInternalEmail({ payload, flags, service, quote }) {
   if (!mailer) return;
 
